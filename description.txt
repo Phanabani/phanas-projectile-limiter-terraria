@@ -1,1 +1,1 @@
-Phana's Projectile Limiter is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Phana's Projectile Limiter lets you change the maximum number of projectiles allowed to exist in the game.
