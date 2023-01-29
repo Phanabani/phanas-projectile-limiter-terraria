@@ -1,0 +1,3 @@
+displayName = Phana's Projectile Limiter
+author = Phanabani
+version = 0.1
