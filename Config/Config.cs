@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Terraria.ModLoader.Config;
 
 namespace PhanasProjectileLimiter.Config;
@@ -11,9 +12,21 @@ public class Config : ModConfig
     [DefaultValue(1000)]
     public int ProjectileLimit;
 
+    public override ConfigScope Mode => ConfigScope.ClientSide;
+
+    public event EventHandler<ProjectileLimitChangedEventArgs> ProjectileLimitChanged;
+
     public override void OnChanged()
     {
         base.OnChanged();
-        SendChat($"Changed max projectile limit to {ProjectileLimit}.");
+        var handler = ProjectileLimitChanged;
+        handler?.Invoke(
+            this, new ProjectileLimitChangedEventArgs { ProjectileLimit = ProjectileLimit }
+        );
     }
+}
+
+public class ProjectileLimitChangedEventArgs : EventArgs
+{
+    public int ProjectileLimit { get; set; }
 }
