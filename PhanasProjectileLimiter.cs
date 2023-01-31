@@ -1,8 +1,7 @@
 using Terraria.ModLoader;
 
-namespace PhanasProjectileLimiter
+namespace PhanasProjectileLimiter;
+
+public class PhanasProjectileLimiter : Mod
 {
-	public class PhanasProjectileLimiter : Mod
-	{
-	}
 }
