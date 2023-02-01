@@ -40,6 +40,17 @@ public class ProjectileLimitSystem : ModSystem
     {
         base.PreUpdateProjectiles();
 
+        while (projectileCount > _config.ProjectileLimit)
+        {
+            var proj = _projectilesOrderedByCreation.Last!.ValueRef;
+            _projectilesOrderedByCreation.RemoveLast();
+            proj.Kill();
+            projectileCount--;
+        }
+    }
+
+    private int UpdateProjectileInfo()
+    {
         var projectileCount = 0;
         foreach (var proj in Main.projectile)
             if (proj.active)
@@ -59,19 +70,12 @@ public class ProjectileLimitSystem : ModSystem
                 _projectilesAlive.Remove(proj);
 
                 LinkedList<Projectile> newList = new();
-                var proj1 = proj;
-                foreach (var p in _projectilesOrderedByCreation.Where(p => p != proj1))
+                foreach (var p in _projectilesOrderedByCreation.Where(p => p != proj))
                     newList.AddFirst(p);
 
                 _projectilesOrderedByCreation = newList;
             }
 
-        while (projectileCount > _config.ProjectileLimit)
-        {
-            var proj = _projectilesOrderedByCreation.Last!.ValueRef;
-            _projectilesOrderedByCreation.RemoveLast();
-            proj.Kill();
-            projectileCount--;
-        }
+        return projectileCount;
     }
 }
