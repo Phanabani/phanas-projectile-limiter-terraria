@@ -1,7 +1,8 @@
 ﻿# Phana's Projectile Limiter
 
-Phana's Projectile Limiter is a Terraria mod that lets you change the maximum
-number of projectiles allowed to exist in the game.
+[Phana's Projectile Limiter](https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354)
+is a Terraria mod that lets you change the maximum number of projectiles
+allowed to exist in the game.
 
 ## Table of Contents
 
@@ -12,7 +13,8 @@ number of projectiles allowed to exist in the game.
 
 ## Install
 
-TODO add link or something
+Install the mod by subscribing to it on the Steam workshop
+([link](https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354)).
 
 ## Config
 
