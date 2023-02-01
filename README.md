@@ -14,7 +14,7 @@ allowed to exist in the game.
 ## Install
 
 Install the mod by subscribing to it on the Steam workshop
-([link](https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354)).
+([click here to open in Steam](steam://openurl/https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354)).
 
 ## Config
 
