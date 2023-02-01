@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using PhanasProjectileLimiter.Common;
-using PhanasProjectileLimiter.Config;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -10,6 +8,7 @@ namespace PhanasProjectileLimiter.Systems;
 public class ProjectileLimitSystem : ModSystem
 {
     private readonly HashSet<Projectile> _projectilesAlive = new();
+    private Config.Config _config;
     private Queue<Projectile> _projectilesOrderedByCreation = new();
     private int ProjectileLimit { get; set; }
 
@@ -17,15 +16,8 @@ public class ProjectileLimitSystem : ModSystem
     {
         base.OnWorldLoad();
 
-        var config = (Config.Config)Mod.GetConfig("Config");
-        SetProjectileLimit(config.ProjectileLimit);
-        config.ProjectileLimitChanged += OnProjectileLimitChanged;
-    }
-
-    private void OnProjectileLimitChanged(object sender,
-        ProjectileLimitChangedEventArgs e)
-    {
-        SetProjectileLimit(e.ProjectileLimit);
+        _config = (Config.Config)Mod.GetConfig("Config");
+        SetProjectileLimit(_config.ProjectileLimit);
     }
 
     private void SetProjectileLimit(int limit)
@@ -39,7 +31,6 @@ public class ProjectileLimitSystem : ModSystem
             Chat.Error("Error: " + msg);
         }
 
-        ProjectileLimit = limit;
         msg = $"Projectile limit set to {limit}";
         Mod.Logger.Info(msg);
         Chat.Info(msg);
@@ -75,7 +66,7 @@ public class ProjectileLimitSystem : ModSystem
                 _projectilesOrderedByCreation = newQueue;
             }
 
-        while (projectileCount > ProjectileLimit)
+        while (projectileCount > _config.ProjectileLimit)
         {
             var proj = _projectilesOrderedByCreation.Dequeue();
             proj.Kill();
