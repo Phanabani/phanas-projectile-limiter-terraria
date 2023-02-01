@@ -67,7 +67,7 @@ public class ProjectileLimitSystem : ModSystem
 
                 LinkedList<Projectile> newList = new();
                 foreach (var p in _projectilesOrderedByCreation.Where(p => p != proj))
-                    newList.AddFirst(p);
+                    newList.AddLast(p);
 
                 _projectilesOrderedByCreation = newList;
             }
