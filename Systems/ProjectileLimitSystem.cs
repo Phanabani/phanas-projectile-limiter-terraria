@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PhanasProjectileLimiter.Common;
 using PhanasProjectileLimiter.Config;
 using Terraria;
@@ -9,7 +10,7 @@ namespace PhanasProjectileLimiter.Systems;
 public class ProjectileLimitSystem : ModSystem
 {
     private readonly HashSet<Projectile> _projectilesAlive = new();
-    private readonly Queue<Projectile> _projectilesOrderedByCreation = new();
+    private Queue<Projectile> _projectilesOrderedByCreation = new();
     private int ProjectileLimit { get; set; }
 
     public override void OnWorldLoad()
@@ -64,21 +65,19 @@ public class ProjectileLimitSystem : ModSystem
             else if (_projectilesAlive.Contains(proj))
             {
                 // Projectile just died
-                // We don't need to remove it from the queue here since that'll
-                // be costly. We can just check active status in the removal
-                // loop
                 _projectilesAlive.Remove(proj);
+
+                Queue<Projectile> newQueue = new(_projectilesOrderedByCreation.Count);
+                var proj1 = proj;
+                foreach (var p in _projectilesOrderedByCreation.Where(p => p != proj1))
+                    newQueue.Enqueue(p);
+
+                _projectilesOrderedByCreation = newQueue;
             }
 
         while (projectileCount > ProjectileLimit)
         {
             var proj = _projectilesOrderedByCreation.Dequeue();
-            if (!proj.active)
-            {
-                _projectilesAlive.Remove(proj);
-                continue;
-            }
-
             proj.Kill();
             projectileCount--;
         }
