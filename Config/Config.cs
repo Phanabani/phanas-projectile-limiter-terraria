@@ -11,5 +11,19 @@ public class Config : ModConfig
     [DefaultValue(1000)]
     public int ProjectileLimit;
 
+    [Label("Projectile Removal Behavior")]
+    [Tooltip(
+        "Whether to remove the newest or oldest projectile after surpassing the " +
+        "projectile limit"
+    )]
+    [DefaultValue(ProjectileRemovalBehavior.RemoveOldest)]
+    public ProjectileRemovalBehavior ProjectileRemovalBehavior;
+
     public override ConfigScope Mode => ConfigScope.ClientSide;
+}
+
+public enum ProjectileRemovalBehavior
+{
+    RemoveOldest,
+    RemoveNewest
 }
