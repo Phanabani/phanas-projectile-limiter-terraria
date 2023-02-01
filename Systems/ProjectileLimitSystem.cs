@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PhanasProjectileLimiter.Common;
+using PhanasProjectileLimiter.Config;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -40,10 +41,22 @@ public class ProjectileLimitSystem : ModSystem
     {
         base.PreUpdateProjectiles();
 
+        var projectileCount = UpdateProjectileInfo();
+
         while (projectileCount > _config.ProjectileLimit)
         {
-            var proj = _projectilesOrderedByCreation.Last!.ValueRef;
-            _projectilesOrderedByCreation.RemoveLast();
+            Projectile proj;
+            if (_config.ProjectileRemovalBehavior == ProjectileRemovalBehavior.RemoveOldest)
+            {
+                proj = _projectilesOrderedByCreation.Last!.ValueRef;
+                _projectilesOrderedByCreation.RemoveLast();
+            }
+            else
+            {
+                proj = _projectilesOrderedByCreation.First!.ValueRef;
+                _projectilesOrderedByCreation.RemoveFirst();
+            }
+
             proj.Kill();
             projectileCount--;
         }
