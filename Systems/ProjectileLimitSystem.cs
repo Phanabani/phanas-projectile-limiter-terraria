@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using PhanasProjectileLimiter.Common;
 using Terraria;
 using Terraria.ModLoader;
@@ -9,8 +10,7 @@ public class ProjectileLimitSystem : ModSystem
 {
     private readonly HashSet<Projectile> _projectilesAlive = new();
     private Config.Config _config;
-    private Queue<Projectile> _projectilesOrderedByCreation = new();
-    private int ProjectileLimit { get; set; }
+    private LinkedList<Projectile> _projectilesOrderedByCreation = new();
 
     public override void OnWorldLoad()
     {
@@ -48,7 +48,7 @@ public class ProjectileLimitSystem : ModSystem
                 {
                     // Projectile just spawned
                     _projectilesAlive.Add(proj);
-                    _projectilesOrderedByCreation.Enqueue(proj);
+                    _projectilesOrderedByCreation.AddFirst(proj);
                 }
 
                 projectileCount++;
@@ -58,17 +58,18 @@ public class ProjectileLimitSystem : ModSystem
                 // Projectile just died
                 _projectilesAlive.Remove(proj);
 
-                Queue<Projectile> newQueue = new(_projectilesOrderedByCreation.Count);
+                LinkedList<Projectile> newList = new();
                 var proj1 = proj;
                 foreach (var p in _projectilesOrderedByCreation.Where(p => p != proj1))
-                    newQueue.Enqueue(p);
+                    newList.AddFirst(p);
 
-                _projectilesOrderedByCreation = newQueue;
+                _projectilesOrderedByCreation = newList;
             }
 
         while (projectileCount > _config.ProjectileLimit)
         {
-            var proj = _projectilesOrderedByCreation.Dequeue();
+            var proj = _projectilesOrderedByCreation.Last!.ValueRef;
+            _projectilesOrderedByCreation.RemoveLast();
             proj.Kill();
             projectileCount--;
         }
