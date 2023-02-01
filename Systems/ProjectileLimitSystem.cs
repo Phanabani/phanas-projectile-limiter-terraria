@@ -42,24 +42,7 @@ public class ProjectileLimitSystem : ModSystem
         base.PreUpdateProjectiles();
 
         var projectileCount = UpdateProjectileInfo();
-
-        while (projectileCount > _config.ProjectileLimit)
-        {
-            Projectile proj;
-            if (_config.ProjectileRemovalBehavior == ProjectileRemovalBehavior.RemoveOldest)
-            {
-                proj = _projectilesOrderedByCreation.Last!.ValueRef;
-                _projectilesOrderedByCreation.RemoveLast();
-            }
-            else
-            {
-                proj = _projectilesOrderedByCreation.First!.ValueRef;
-                _projectilesOrderedByCreation.RemoveFirst();
-            }
-
-            proj.Kill();
-            projectileCount--;
-        }
+        RemoveProjectiles(projectileCount);
     }
 
     private int UpdateProjectileInfo()
@@ -90,5 +73,26 @@ public class ProjectileLimitSystem : ModSystem
             }
 
         return projectileCount;
+    }
+
+    private void RemoveProjectiles(int projectileCount)
+    {
+        while (projectileCount > _config.ProjectileLimit)
+        {
+            Projectile proj;
+            if (_config.ProjectileRemovalBehavior == ProjectileRemovalBehavior.RemoveOldest)
+            {
+                proj = _projectilesOrderedByCreation.Last!.ValueRef;
+                _projectilesOrderedByCreation.RemoveLast();
+            }
+            else
+            {
+                proj = _projectilesOrderedByCreation.First!.ValueRef;
+                _projectilesOrderedByCreation.RemoveFirst();
+            }
+
+            proj.Kill();
+            projectileCount--;
+        }
     }
 }
