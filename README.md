@@ -13,8 +13,11 @@ allowed to exist in the game.
 
 ## Install
 
-Install the mod by subscribing to it on the Steam workshop
-([click here to open in Steam](steam://openurl/https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354)).
+Install the mod by [subscribing to it on the Steam workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354).
+You can also paste the following link into your browser to open it directly
+through Steam:
+
+`steam://openurl/https://steamcommunity.com/sharedfiles/filedetails/?id=2926706354`
 
 ## Config
 
